@@ -85,10 +85,12 @@ target_link_libraries(vulkan-sycl-display PRIVATE
   wayland-client)
 
 # --- test target ---
-file(GLOB_RECURSE TST *-test.cc)
-list(FILTER TST EXCLUDE REGEX "build/.*")
 enable_testing()
-add_executable(vulkan-sycl-display-test ${TST})
+add_executable(vulkan-sycl-display-test
+  aux/test/tuple-support-test.cc
+  aux/test/packed-tuple-test.cc
+  aux/test/versor-test.cc
+)
 target_compile_options(vulkan-sycl-display-test PRIVATE
   -Wall
   -Wextra
@@ -101,7 +103,7 @@ target_include_directories(vulkan-sycl-display-test PRIVATE
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(vulkan-sycl-display-test PRIVATE Catch2::Catch2WithMain)
-add_test(NAME run_criss_cross_tests COMMAND vulkan-sycl-display-test)
+add_test(NAME run_vulkan_sycl_display_test COMMAND vulkan-sycl-display-test)
 
 # --- run in develop ---
 add_custom_target(run
